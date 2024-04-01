@@ -36,8 +36,6 @@ module.exports = {
         new BundleAnalyzerPlugin()
     ],
     optimization: {
-        nodeEnv: 'development',
-        minimize: true,
         runtimeChunk: 'single',
         moduleIds: 'deterministic',
 
