@@ -11,6 +11,10 @@ module.exports = {
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+        modules: [
+            path.resolve(__dirname, 'src'),
+            'node_modules',
+        ],
     },
     module: {
         rules: [
