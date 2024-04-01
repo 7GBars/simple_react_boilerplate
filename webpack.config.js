@@ -33,7 +33,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "src", "index.html"),
         }),
-        new BundleAnalyzerPlugin()
+        new BundleAnalyzerPlugin({
+            analyzerPort: 8889
+        })
     ],
     optimization: {
         runtimeChunk: 'single',
