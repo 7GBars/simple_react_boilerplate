@@ -7,7 +7,7 @@ const App: FC<{}> = () => {
 
   return (
     <>
-
+      <Button> as</Button>
       Test boilerplate
     </>
 
