@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {FC} from "react";
-import {Button} from "lib2_geo_bars";
+import {Button} from "lib2_geo_bars/dist/components/Button/Button";
+
+
 
 
 const App: FC<{}> = () => {
 
   return (
     <>
-      <Button>Test</Button>
+      <Button>as</Button>
       Test boilerplate
     </>
 
