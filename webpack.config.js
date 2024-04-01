@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
+    mode: 'development',
     entry: './src/index.tsx',
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -35,7 +36,7 @@ module.exports = {
         new BundleAnalyzerPlugin()
     ],
     optimization: {
-        nodeEnv: 'production',
+        nodeEnv: 'development',
         minimize: true,
         runtimeChunk: 'single',
         moduleIds: 'deterministic',

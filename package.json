@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lib2_geo_bars": "^1.0.41",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
