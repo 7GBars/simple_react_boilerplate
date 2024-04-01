@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/index.tsx',
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "bundle.js",
+        filename: '[name].[contenthash].js',
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
@@ -34,4 +34,24 @@ module.exports = {
         }),
         new BundleAnalyzerPlugin()
     ],
+    optimization: {
+        nodeEnv: 'production',
+        minimize: true,
+        runtimeChunk: 'single',
+        moduleIds: 'deterministic',
+
+        splitChunks: {
+            chunks: 'all',
+
+            maxInitialRequests: Infinity,
+            minSize: 0,
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
+    },
 }
