@@ -20,16 +20,23 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                loader: "ts-loader",
+                use: ["ts-loader"],
             },
             {
                 enforce: "pre",
                 test: /\.js$/,
-                loader: "source-map-loader",
+                use: ["source-map-loader"],
             },
             {
                 test: /\.css$/,
-                loader: "css-loader",
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
             },
         ],
     },
