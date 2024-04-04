@@ -2,6 +2,6 @@
 @import "@commonStyles";
 
 h1 {
-  font-family: Algerian;
+  background-color: var(--base-color);
   //height: calc(100% - #{$catalogues-tittle-font-size}); //todo: @Ашот
 }
