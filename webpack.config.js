@@ -10,7 +10,7 @@ module.exports = {
         filename: '[name].[contenthash].js',
     },
     resolve: {
-        extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+        extensions: [".js", ".jsx", ".json", ".ts", ".tsx", ".css", ".scss"],
         modules: [
             path.resolve(__dirname, 'src'),
             'node_modules',

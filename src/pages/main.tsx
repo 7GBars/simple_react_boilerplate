@@ -9,6 +9,7 @@ type TMainProps = {
 export const Main: FC<TMainProps> = props => {
   return (
     <>
+      <div>test</div>
       <h1>Main page</h1>
       <Button>as</Button>
       Test boilerplate
