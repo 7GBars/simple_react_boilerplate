@@ -16,7 +16,7 @@ module.exports = {
             'node_modules',
         ],
         alias: {
-            '@commonStyles': path.resolve(__dirname, 'node_modules/lib2_geo_bars/styles/common.css'),
+            '@commonStyles': path.resolve(__dirname, 'node_modules/lib2_geo_bars/dist/styles/common.css'),
         }
     },
     module: {
