@@ -1,0 +1,19 @@
+import React, {FC} from 'react';
+import {Button} from "lib2_geo_bars/Button";
+
+
+type TMainProps = {
+
+};
+
+export const Main: FC<TMainProps> = props => {
+  return (
+    <>
+      <h1>Main page</h1>
+      <Button>as</Button>
+      Test boilerplate
+    </>
+  );
+};
+
+
