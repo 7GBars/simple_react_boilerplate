@@ -11,6 +11,7 @@ type TMainProps = {
 export const Main: FC<TMainProps> = props => {
   return (
     <>
+      <h1>as</h1>
       <Button>as</Button>
     </>
   );
