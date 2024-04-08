@@ -3,6 +3,7 @@ import {FC} from "react";
 import {Main} from "./pages/main";
 
 import './app.css';
+import './variables/output.css';
 
 
 
