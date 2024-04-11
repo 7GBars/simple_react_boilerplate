@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const projectRoot = path.resolve(__dirname, '../..'); // Переместиться на уровень выше, так как скрипт находится в подпапке
+const projectRoot = path.resolve(__dirname); // Переместиться на уровень выше, так как скрипт находится в подпапке
 
 // Путь к файлу variables.scss относительно корневой директории проекта
 const filePath = path.join(projectRoot, 'src', 'variables', 'variables.scss');
