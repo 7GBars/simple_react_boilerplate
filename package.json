@@ -7,7 +7,8 @@
     "start": "webpack serve --port 3000 --mode development --open --hot",
     "build": "webpack --mode production",
     "rmdir-win": "rmdir /s /q node_modules && del package-lock.json && npm cache clean --force",
-    "generate-css-variables": "node generateVariables.js"
+    "generate-css-variables": "node generateVariables.js",
+    "update_packages": "ncu -u lib2_geo_bars && npm install"
   },
   "keywords": [],
   "author": "",
