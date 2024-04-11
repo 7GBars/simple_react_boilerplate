@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "copy-webpack-plugin": "^12.0.2",
     "lib2_geo_bars": "^1.0.179",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
