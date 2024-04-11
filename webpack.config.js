@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     mode: 'development',
@@ -8,6 +9,14 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: '[name].[contenthash].js',
+        publicPath: '/'
+    },
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'public'),
+        },
+        compress: true,
+        port: 9000,
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx", ".css", ".scss"],
@@ -53,7 +62,13 @@ module.exports = {
         }),
         new BundleAnalyzerPlugin({
             analyzerPort: 8889
-        })
+        }),
+
+        // new CopyPlugin({
+        //     patterns: [
+        //         { from: 'node_modules/lib2_geo_bars/dist/assets/images', to: path.join(__dirname, 'public') }
+        //     ],
+        // }),
     ],
     optimization: {
         runtimeChunk: 'single',

@@ -1,10 +1,11 @@
 {
   "name": "my-app-ts",
+  "homepage": "/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --port 3000 --mode development --open --hot",
+    "start": "webpack serve --mode development --open --hot",
     "build": "webpack --mode production",
     "rmdir-win": "rmdir /s /q node_modules && del package-lock.json && npm cache clean --force",
     "generate-css-variables": "node generateVariables.js",

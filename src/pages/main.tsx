@@ -5,7 +5,6 @@ import {Logo} from "lib2_geo_bars/Logo";
 import './main.scss';
 
 
-
 type TMainProps = {
 
 };
