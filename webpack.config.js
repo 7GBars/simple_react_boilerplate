@@ -64,11 +64,11 @@ module.exports = {
             analyzerPort: 8889
         }),
 
-        // new CopyPlugin({
-        //     patterns: [
-        //         { from: 'node_modules/lib2_geo_bars/dist/assets/images', to: path.join(__dirname, 'public') }
-        //     ],
-        // }),
+        new CopyPlugin({
+            patterns: [
+                { from: 'node_modules/lib2_geo_bars/dist/img', to: path.join(__dirname, 'public') }
+            ],
+        }),
     ],
     optimization: {
         runtimeChunk: 'single',
