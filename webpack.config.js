@@ -66,7 +66,7 @@ module.exports = {
 
         new CopyPlugin({
             patterns: [
-                { from: 'node_modules/lib2_geo_bars/dist/assets', to: path.join(__dirname, 'public') }
+                { from: 'node_modules/lib2_geo_bars/dist/assets', to: path.join(__dirname, 'public/assets') }
             ],
         }),
     ],
