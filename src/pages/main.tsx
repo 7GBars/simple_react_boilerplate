@@ -5,6 +5,7 @@ import {Logo} from "lib2_geo_bars/Logo";
 import './main.scss';
 import {Test} from "../components/Test";
 import {useState} from "react";
+import {BigImg} from "lib2_geo_bars/BigImg";
 
 
 type TMainProps = {
@@ -20,6 +21,7 @@ export const Main: FC<TMainProps> = props => {
       <h1>as</h1>
       <Test someProps={id} handler={setId}/>
       <Logo/>
+      <BigImg/>
       <Button>as</Button>
     </>
   );
