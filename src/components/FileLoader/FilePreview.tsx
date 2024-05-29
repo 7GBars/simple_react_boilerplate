@@ -1,15 +1,18 @@
 import React, {FC} from 'react';
 
+import './FilePreview.scss';
+import {useEffect} from "react";
+import {useFileReader} from "../../utils/index";
 
 type TFileLoaderWithPreviewProps = {
   file: File;
-  dataURL: string;
 };
 
 export const FilePreview: FC<TFileLoaderWithPreviewProps> = props => {
+  const {fileDataURL} = useFileReader(props.file, 'readAsDataURL')
   return (
-    <div>
-      <img src={props.dataURL}/>
+    <div className={'img-preview-wrapper'}>
+      <img src={fileDataURL}/>
     </div>
   );
 };

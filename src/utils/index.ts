@@ -1,1 +1,1 @@
-export * from './files/FileReader'
+export * from './files/useFileReader'
