@@ -1,14 +1,11 @@
-import React, {FC} from 'react';
-import {useFileReader} from "../../utils/index";
-import {useState} from "react";
-import {useEffect} from "react";
+import React, {FC, useState} from 'react';
+
 import {FilePreview} from "./FilePreview";
 
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 type TFileLoaderProps = {
 
 };
-
 export const FileLoader: FC<TFileLoaderProps> = props => {
   const [currentFile, setCurrentFile] = useState<File | undefined>(undefined);
   const [fileDataURL, setFileDataURL] = useState(null);
