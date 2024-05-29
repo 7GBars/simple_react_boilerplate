@@ -1,4 +1,4 @@
-type ReadingType = 'readAsBinaryString' | 'readAsDataURL' | 'readAsDataURL' | 'readAsText';
+type ReadingType = 'readAsDataURL' | 'readAsArrayBuffer' | 'readAsText';
 export const FileReaderUtil =  (fileObject: File, type: ReadingType) => {
   const fileReader =  new FileReader();
   fileReader.onload = (e) => {
@@ -6,5 +6,5 @@ export const FileReaderUtil =  (fileObject: File, type: ReadingType) => {
     console.log(result)
   };
 
-  fileReader.readAsDataURL(fileObject)
+  fileReader[type](fileObject);
 }
