@@ -1,2 +1,2 @@
-export * from './FileLoader/FileLoader';
+export * from './FileLoader';
 export * from './Test/Test';
