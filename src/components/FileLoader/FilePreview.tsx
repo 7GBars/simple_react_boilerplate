@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {useFileReader} from "../../utils/index";
 import './FilePreview.scss';
 
+
 type TFileLoaderWithPreviewProps = {
   file: File;
 };

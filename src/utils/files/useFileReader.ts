@@ -1,5 +1,5 @@
-import {useEffect} from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {SAVED_FILE_FIELD} from "../../constants/index";
 
 type ReadingType = 'readAsDataURL' | 'readAsArrayBuffer' | 'readAsText';
 export const useFileReader =  (fileObject: File, type: ReadingType) => {
@@ -12,7 +12,7 @@ export const useFileReader =  (fileObject: File, type: ReadingType) => {
         const { result } = e.target;
         if (result && !isCancel) {
           setFileDataURL(result)
-          console.log(result)
+         localStorage.setItem(SAVED_FILE_FIELD, result as string);
         }
       }
       fileReader[type](fileObject);

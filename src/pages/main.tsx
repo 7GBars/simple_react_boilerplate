@@ -1,24 +1,26 @@
-import React, {FC} from 'react';
-import {Button} from "lib2_geo_bars/Button";
-import {Logo} from "lib2_geo_bars/Logo";
+import React, {FC, useState} from 'react';
 
-import './main.scss';
-import {Test} from "../components/Test/Test";
-import {useState} from "react";
-import {BigImg} from "lib2_geo_bars/BigImg";
+import {SAVED_FILE_FIELD} from "../constants/index";
 import {FileLoader} from "../components/index";
 
+import './main.scss';
 
 type TMainProps = {
 
 };
-
 export const Main: FC<TMainProps> = props => {
   const [id, setId] = useState(0)
+  const [savedFile, setSavedFile] = useState(undefined);
 
   return (
     <>
      <FileLoader/>
+      <button onClick={() => {
+        const savedFile = localStorage.getItem(SAVED_FILE_FIELD);
+        savedFile && setSavedFile(savedFile.toString())
+      }}> Показать  </button>
+
+      <img src={savedFile}/>
     </>
   );
 };
