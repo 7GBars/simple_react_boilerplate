@@ -6,6 +6,7 @@ import {FileLoader} from "../components/index";
 import './main.scss';
 
 import {IndexedDBHelper} from "../utils/useIndexedDB/IndexedDB";
+import {useEffect} from "react";
 
 type TMainProps = {
 
@@ -20,6 +21,22 @@ export const Main: FC<TMainProps> = props => {
     created: new Date()
   };
   const dbHelper = new IndexedDBHelper<typeof book, 'fileStore' | 'objectStore'>(dbName, ['fileStore', 'objectStore']);
+  useEffect(() => {
+    dbHelper.connectDB()
+      .then(() => {
+        // Теперь база данных подключена, и вы можете безопасно выполнять операции с ней
+
+        return dbHelper.getDataByKey('objectStore');
+      })
+      .then(data => {
+
+        console.log('Полученные данные:', data);
+      })
+      .catch(error => {
+        console.error('Ошибка при работе с базой данных:', error);
+      });
+  }, []);
+
 
   return (
     <div style={{display: "flex", gap: 10}}>

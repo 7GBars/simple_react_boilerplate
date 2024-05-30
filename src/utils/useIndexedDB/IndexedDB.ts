@@ -17,79 +17,86 @@ export class IndexedDBHelper<T, StoreNames extends string> {
     }
     this._storesNames = storesNames;
   }
-  public connectDB() {
-    let openRequest = indexedDB.open(this._dbName, 1);
+  public async connectDB(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let openRequest = indexedDB.open(this._dbName, 1);
+      openRequest.onupgradeneeded = (e) => {
+        console.log('onupgradeneeded');
+        let db = (e.currentTarget as IDBOpenDBRequest).result;
+        this._storesNames.map(name => {
+          if (!db.objectStoreNames.contains(name)) {
+            db.createObjectStore(name, { keyPath: `id` });
+          }
+        })
 
-    openRequest.onupgradeneeded = (e) => {
-      console.log('onupgradeneeded');
-      let db = (e.currentTarget as IDBOpenDBRequest).result;
-      this._storesNames.map(name => {
-        if (!db.objectStoreNames.contains(name)) {
-          db.createObjectStore(name, { keyPath: `id` });
-        }
-      })
+      };
+      openRequest.onsuccess = () => {
+        console.log('onSuccess');
+        let db = (openRequest.result as IDBDatabase);
+        this._db = db;
+        resolve();
+      };
+      openRequest.onerror = (err) => {
+        console.error(`Ошибка открытия баззы ${this._dbName}`, openRequest.error);
+        reject();
+      };
+    })
+  }
 
-    };
-    openRequest.onsuccess = () => {
-     console.log('onSuccess');
-     let db = (openRequest.result as IDBDatabase);
-     this._db = db;
-    };
-    openRequest.onerror = (err) => {
-      console.error(`Ошибка открытия баззы ${this._dbName}`, openRequest.error);
-    };
+  public async deleteDB(dbName: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let deleteRequest = indexedDB.deleteDatabase(dbName);
+      deleteRequest.onsuccess = (e) => {
+        console.log(`База ${dbName} успешно удалена`, e)
+        resolve()
+      }
+      deleteRequest.onerror = (err) => {
+        console.error(`Ошибка удаления ${dbName}`, err);
+        reject(err);
+      }
+    })
+  }
+
+  public async saveObjectData<N>(storeName: StoreNames, data: T): Promise<IDBValidKey> {
+    return new Promise((resolve, reject) => {
+      if (!this._db) {
+        console.error('База данных не инициализирована');
+        return;
+      }
+      const transaction = this._db.transaction([storeName], 'readwrite');
+      const store = transaction.objectStore(storeName);
+      const request = store.add({...data, id: storeName});
+
+      request.onsuccess = () => {
+        console.log('Данные добавлены', 'id равен', request.result);
+        resolve(request.result)
+      };
+      request.onerror = () => {
+        console.log('Ошибка при добавлении данных', request.error);
+        reject(request.error);
+      };
+    })
 
   }
 
-  public deleteDB(dbName: string) {
-    let deleteRequest = indexedDB.deleteDatabase(dbName);
-    deleteRequest.onsuccess = (e) => {
-      console.log(`База ${dbName} успешно удалена`, e)
-    }
-    deleteRequest.onerror = (err) => {
-      console.error(`Ошибка удаления ${dbName}`, err)
-    }
-  }
-
-  public saveObjectData<N>(storeName: StoreNames, data: T) {
-    if (!this._db) {
-      console.error('База данных не инициализирована');
-      return;
-    }
-    const transaction = this._db.transaction([storeName], 'readwrite');
-    const store = transaction.objectStore(storeName);
-    const request = store.add({...data, id: storeName});
-
-    request.onsuccess = () => {
-      console.log('Данные добавлены', 'id равен', request.result);
-      // resolve(request.result);
-      return request.result;
-    };
-
-    request.onerror = () => {
-      console.log('Ошибка при добавлении данных', request.error);
-      // reject(request.error);
-      return request.error;
-    };
-  }
-
-  public getDataByKey(key: StoreNames): T | undefined {
-    if (!this._db) {
-      console.error('База данных не инициализирована');
-      return;
-    }
-    const transaction = this._db.transaction([key], 'readonly');
-    const store = transaction.objectStore(key);
-    const request = store.get(key);
-    request.onsuccess = () => {
-      console.log('Найденные данные:', request.result);
-      return (request.result);
-    };
-
-    request.onerror = () => {
-      console.error('Ошибка при поиске данных', request.error);
-      return (request.error);
-    };
+  public async getDataByKey(key: StoreNames): Promise<T | undefined> {
+    return new Promise((resolve, reject) => {
+      if (!this._db) {
+        console.error('База данных не инициализирована');
+        return;
+      }
+      const transaction = this._db.transaction([key], 'readonly');
+      const store = transaction.objectStore(key);
+      const request = store.get(key);
+      request.onsuccess = () => {
+        console.log('Найденные данные:', request.result);
+        resolve(request.result);
+      };
+      request.onerror = () => {
+        console.error('Ошибка при поиске данных', request.error);
+        reject(request.error);
+      };
+    })
   }
 
 
