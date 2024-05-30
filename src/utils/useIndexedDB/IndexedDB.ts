@@ -1,23 +1,29 @@
 let openRequest = indexedDB.open("store", 1);
 
 
-
-export class IndexedDBHelper<T> {
-  dbName: string;
-  storesNames: [string, string];
+export class IndexedDBHelper<T, StoreNames extends string> {
+  private readonly _dbName: string;
+  private _storesNames: [StoreNames, StoreNames];
   private _db: IDBDatabase | null = null;
 
-  constructor(dbName: string, storesNames: [string, string]) {
-    this.dbName = dbName;
-    this.storesNames = storesNames;
+  public get DataBase() {
+    return this._db;
   }
-  public connectDB(f?: (db:  IDBDatabase) => void) {
-    let openRequest = indexedDB.open(this.dbName, 1);
+  constructor(dbName: string, storesNames: [StoreNames, StoreNames]) {
+    this._dbName = dbName;
+    const uniqueStores = new Set(storesNames);
+    if (uniqueStores.size !== storesNames.length) {
+      throw new Error("Имена хранилищ должны быть уникальными");
+    }
+    this._storesNames = storesNames;
+  }
+  public connectDB() {
+    let openRequest = indexedDB.open(this._dbName, 1);
 
     openRequest.onupgradeneeded = (e) => {
       console.log('onupgradeneeded');
       let db = (e.currentTarget as IDBOpenDBRequest).result;
-      this.storesNames.map(name => {
+      this._storesNames.map(name => {
         if (!db.objectStoreNames.contains(name)) {
           db.createObjectStore(name, { keyPath: 'id' });
         }
@@ -28,10 +34,9 @@ export class IndexedDBHelper<T> {
      console.log('onSuccess');
      let db = (openRequest.result as IDBDatabase);
      this._db = db;
-      f && f(db);
     };
     openRequest.onerror = (err) => {
-      console.error(`Ошибка открытия баззы ${this.dbName}`, openRequest.error);
+      console.error(`Ошибка открытия баззы ${this._dbName}`, openRequest.error);
     };
 
   }
@@ -44,6 +49,23 @@ export class IndexedDBHelper<T> {
     deleteRequest.onerror = (err) => {
       console.error(`Ошибка удаления ${dbName}`, err)
     }
+  }
+
+  public saveObjectData<N>(storeName: StoreNames, data: T ) {
+    if (!this._db) {
+
+      console.error('База данных не инициализирована');
+      return;
+    }
+    const transaction = this._db.transaction([storeName], 'readwrite');
+  }
+  public saveFiles(storeName: StoreNames, data: T) {
+    if (!this._db) {
+      // reject('База данных не инициализирована');
+      console.error('База данных не инициализирована');
+      return;
+    }
+    const transaction = this._db.transaction([storeName], 'readwrite');
   }
 
 }

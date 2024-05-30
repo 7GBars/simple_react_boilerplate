@@ -19,19 +19,26 @@ export const Main: FC<TMainProps> = props => {
     price: 10,
     created: new Date()
   };
-  const dbHelper = new IndexedDBHelper(dbName, ['fileStore', 'objectStore']);
+  const dbHelper = new IndexedDBHelper<typeof book, 'fileStore' | 'objectStore'>(dbName, ['fileStore', 'objectStore']);
 
   return (
-    <>
+    <div style={{display: "flex", gap: 10}}>
       <button onClick={() => {
         dbHelper.connectDB();
-      }}> Добавить
+      }}> Подключиться к базе
       </button>
+
+      <button onClick={() => {
+        // dbHelper.saveObjectData('objectStore', {});
+      }}> Добавить объект в базу данных объекта
+      </button>
+
+
       <button onClick={() => {
         dbHelper.deleteDB(dbName);
       }}> Удалить bd
       </button>
-    </>
+    </div>
   );
 };
 
