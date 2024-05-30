@@ -4,29 +4,31 @@ let openRequest = indexedDB.open("store", 1);
 
 export class IndexedDBHelper<T> {
   dbName: string;
+  storesNames: [string, string];
   private _db: IDBDatabase | null = null;
 
-  constructor(dbName: string) {
+  constructor(dbName: string, storesNames: [string, string]) {
     this.dbName = dbName;
-    console.log('helper создан');
+    this.storesNames = storesNames;
   }
   public connectDB(f?: (db:  IDBDatabase) => void) {
     let openRequest = indexedDB.open(this.dbName, 1);
 
     openRequest.onupgradeneeded = (e) => {
       console.log('onupgradeneeded');
-      // let db = (e.currentTarget as IDBOpenDBRequest).result;
-      // if (!db.objectStoreNames.contains('books')) {
-      //   db.createObjectStore('books', {keyPath: 'id'});
-      // }
+      let db = (e.currentTarget as IDBOpenDBRequest).result;
+      this.storesNames.map(name => {
+        if (!db.objectStoreNames.contains(name)) {
+          db.createObjectStore(name, { keyPath: 'id' });
+        }
+      })
+
     };
-
     openRequest.onsuccess = () => {
-      // let db = (openRequest.result as IDBDatabase);
-     console.log('onsuccess');
-      // this.f(db);
-      // this._db = db;
-
+     console.log('onSuccess');
+     let db = (openRequest.result as IDBDatabase);
+     this._db = db;
+      f && f(db);
     };
     openRequest.onerror = (err) => {
       console.error(`Ошибка открытия баззы ${this.dbName}`, openRequest.error);
