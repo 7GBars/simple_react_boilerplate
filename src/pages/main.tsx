@@ -5,22 +5,32 @@ import {FileLoader} from "../components/index";
 
 import './main.scss';
 
+import {IndexedDBHelper} from "../utils/useIndexedDB/IndexedDB";
+
 type TMainProps = {
 
 };
 export const Main: FC<TMainProps> = props => {
   const [id, setId] = useState(0)
   const [savedFile, setSavedFile] = useState(undefined);
+  const dbName ='my-db'
+  let book = {
+    id: 'react',
+    price: 10,
+    created: new Date()
+  };
+  const dbHelper = new IndexedDBHelper(dbName);
 
   return (
     <>
-     <FileLoader/>
       <button onClick={() => {
-        const savedFile = localStorage.getItem(SAVED_FILE_FIELD);
-        savedFile && setSavedFile(savedFile.toString())
-      }}> Показать  </button>
-
-      <img src={savedFile}/>
+        dbHelper.connectDB()
+      }}> Добавить
+      </button>
+      <button onClick={() => {
+        dbHelper.deleteDB(dbName)
+      }}> Удалить bd
+      </button>
     </>
   );
 };
