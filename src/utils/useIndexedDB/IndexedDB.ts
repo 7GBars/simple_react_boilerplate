@@ -72,6 +72,25 @@ export class IndexedDBHelper<T, StoreNames extends string> {
       return request.error;
     };
   }
-  
+
+  public getDataByKey(key: StoreNames): T | undefined {
+    if (!this._db) {
+      console.error('База данных не инициализирована');
+      return;
+    }
+    const transaction = this._db.transaction([key], 'readonly');
+    const store = transaction.objectStore(key);
+    const request = store.get(key);
+    request.onsuccess = () => {
+      console.log('Найденные данные:', request.result);
+      return (request.result);
+    };
+
+    request.onerror = () => {
+      console.error('Ошибка при поиске данных', request.error);
+      return (request.error);
+    };
+  }
+
 
 }

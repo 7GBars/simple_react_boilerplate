@@ -33,6 +33,10 @@ export const Main: FC<TMainProps> = props => {
       }}> Добавить объект в базу данных объекта
       </button>
 
+      <button onClick={() => {
+        dbHelper.getDataByKey('objectStore');
+      }}> Получить данные
+      </button>
 
       <button onClick={() => {
         dbHelper.deleteDB(dbName);
