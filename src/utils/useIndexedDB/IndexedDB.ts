@@ -1,5 +1,5 @@
 let openRequest = indexedDB.open("store", 1);
-
+import { v4 as uuidv4 } from 'uuid';
 
 export class IndexedDBHelper<T, StoreNames extends string> {
   private readonly _dbName: string;
@@ -25,7 +25,7 @@ export class IndexedDBHelper<T, StoreNames extends string> {
       let db = (e.currentTarget as IDBOpenDBRequest).result;
       this._storesNames.map(name => {
         if (!db.objectStoreNames.contains(name)) {
-          db.createObjectStore(name, { keyPath: 'id' });
+          db.createObjectStore(name, { keyPath: `id` });
         }
       })
 
@@ -51,21 +51,27 @@ export class IndexedDBHelper<T, StoreNames extends string> {
     }
   }
 
-  public saveObjectData<N>(storeName: StoreNames, data: T ) {
+  public saveObjectData<N>(storeName: StoreNames, data: T) {
     if (!this._db) {
+      console.error('База данных не инициализирована');
+      return;
+    }
+    const transaction = this._db.transaction([storeName], 'readwrite');
+    const store = transaction.objectStore(storeName);
+    const request = store.add({...data, id: storeName});
 
-      console.error('База данных не инициализирована');
-      return;
-    }
-    const transaction = this._db.transaction([storeName], 'readwrite');
+    request.onsuccess = () => {
+      console.log('Данные добавлены', 'id равен', request.result);
+      // resolve(request.result);
+      return request.result;
+    };
+
+    request.onerror = () => {
+      console.log('Ошибка при добавлении данных', request.error);
+      // reject(request.error);
+      return request.error;
+    };
   }
-  public saveFiles(storeName: StoreNames, data: T) {
-    if (!this._db) {
-      // reject('База данных не инициализирована');
-      console.error('База данных не инициализирована');
-      return;
-    }
-    const transaction = this._db.transaction([storeName], 'readwrite');
-  }
+  
 
 }

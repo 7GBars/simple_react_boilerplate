@@ -15,11 +15,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/uuid": "^9.0.8",
     "copy-webpack-plugin": "^12.0.2",
     "lib2_geo_bars": "^1.0.199",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "transfer-webpack-plugin": "^0.1.4"
+    "transfer-webpack-plugin": "^0.1.4",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.2",

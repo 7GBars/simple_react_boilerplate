@@ -29,7 +29,7 @@ export const Main: FC<TMainProps> = props => {
       </button>
 
       <button onClick={() => {
-        // dbHelper.saveObjectData('objectStore', {});
+        dbHelper.saveObjectData('objectStore', book);
       }}> Добавить объект в базу данных объекта
       </button>
 
