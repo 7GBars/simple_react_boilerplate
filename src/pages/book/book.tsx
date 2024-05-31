@@ -56,6 +56,7 @@ export const Book: FC<TBookProps> = props => {
       <div className={'book-card__actions'}>
         <button onClick={(e) => {
           StorageHelper.set('book', newBookInfo);
+          setNewBookInfo(initBookInfo);
         }}>Добавить книгу</button>
       </div>
     </div>
