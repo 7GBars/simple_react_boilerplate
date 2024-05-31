@@ -5,7 +5,7 @@ import {FileLoader} from "../../components/index";
 
 import '../main.scss';
 
-import {IndexedDBHelper} from "../../utils/useIndexedDB/IndexedDB";
+import {IndexedDBHelper} from "../../helpers/indexedDBHelper/IndexedDB";
 import {useEffect} from "react";
 
 type TMainProps = {

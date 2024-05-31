@@ -5,6 +5,7 @@ import StorageHelper from "../../helpers/StorageHelper";
 import {TextInput} from "../../components/index";
 import './book.scss'
 import {makeLogger} from "ts-loader/dist/logger";
+import {useEffect} from "react";
 
 
 type TBookProps = {};
@@ -25,7 +26,14 @@ export const Book: FC<TBookProps> = props => {
 
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
-  console.log('newBook info ', newBookInfo)
+  useEffect(() => {
+
+    return () => {
+      console.log('component book unmounted')
+    }
+  }, []);
+
+  console.log('rerender')
   return (
     <div className={'book-card'}>
       <div className={'book-card__info'}>
