@@ -6,6 +6,8 @@ import {TextInput} from "../../components/index";
 import './book.scss'
 import {makeLogger} from "ts-loader/dist/logger";
 import {useEffect} from "react";
+import {IndexedDBHelper} from "../../helpers/index";
+import {useRef} from "react";
 
 
 type TBookProps = {};
@@ -25,11 +27,28 @@ export const Book: FC<TBookProps> = props => {
   };
 
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
+  const dbHelper = new IndexedDBHelper<TBookType, 'files' | 'objects'>('books', ['objects', 'files']);
+
+  const bookData = useRef<TBookType>(null);
+  bookData.current = newBookInfo;
 
   useEffect(() => {
+    dbHelper.connectDB().then((res) => {
+      dbHelper.getDataByKey('files')
+        .then(data => console.log(data))
+    })
 
     return () => {
       console.log('component book unmounted')
+      if (dbHelper.DataBase) {
+        console.log('connect при размонтировании остался',  newBookInfo)
+        dbHelper.saveObjectData('files', bookData.current)
+      } else {
+        console.log('Новый коннект при размонтировании',  bookData.current)
+        dbHelper.connectDB().then((res) => {
+          dbHelper.saveObjectData('files', bookData.current)
+        })
+      }
     }
   }, []);
 
