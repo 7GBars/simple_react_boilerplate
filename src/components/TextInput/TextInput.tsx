@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 interface ManagedInputProps {
   value: string;
@@ -7,15 +7,16 @@ interface ManagedInputProps {
 }
 
 export const TextInput: React.FC<ManagedInputProps> = ({
-                                                     value,
-                                                     onChange,
-                                                   }) => {
+                                                         value,
+                                                         onChange,
+                                                         type
+                                                       }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     onChange(newValue);
   };
 
-  return <input type="text" value={value} onChange={handleChange} />;
+  return <input type={type} value={value} onChange={handleChange}/>;
 };
 
