@@ -11,7 +11,7 @@ import {useEffect} from "react";
 type TMainProps = {
 
 };
-export const Main: FC<TMainProps> = props => {
+export const MainPage: FC<TMainProps> = props => {
   const [id, setId] = useState(0)
   const [savedFile, setSavedFile] = useState(undefined);
   const dbName ='my-db'

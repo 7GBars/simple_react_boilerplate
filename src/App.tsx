@@ -1,20 +1,29 @@
-import * as React from 'react';
-import {FC} from "react";
-import {Main} from "./pages";
+import React, {FC} from 'react';
+
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import {Layout, Book, MainPage} from "./pages";
+
+
 
 import './app.css';
 import './variables/output.css';
-import {Book} from "./pages";
+
 
 
 
 const App: FC<{}> = () => {
 
   return (
-    <>
-      <Book/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<MainPage/>} />
+          <Route path="book" element={<Book />} />
 
+          <Route path="*" element={<h1> 404 - no content</h1>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 export default App;

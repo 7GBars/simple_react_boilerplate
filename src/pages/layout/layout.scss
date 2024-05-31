@@ -1,0 +1,15 @@
+.main-layout-container {
+  display: grid;
+  grid-template-rows: max-content 1fr;
+  grid-template-columns: 1fr;
+
+  .main-layout-container__nav {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    background-color: #2d6da3;
+  }
+  .main-layout-container__content {
+    background-color: #4cae4c;
+  }
+}

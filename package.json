@@ -20,6 +20,7 @@
     "lib2_geo_bars": "^1.0.199",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^6.23.1",
     "transfer-webpack-plugin": "^0.1.4",
     "uuid": "^9.0.1"
   },
