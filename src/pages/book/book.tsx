@@ -4,6 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 import StorageHelper from "../../helpers/StorageHelper";
 import {TextInput} from "../../components/index";
 import './book.scss'
+import {makeLogger} from "ts-loader/dist/logger";
 
 
 type TBookProps = {};
@@ -24,6 +25,7 @@ export const Book: FC<TBookProps> = props => {
 
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
+  console.log('newBook info ', newBookInfo)
   return (
     <div className={'book-card'}>
       <div className={'book-card__info'}>
@@ -31,7 +33,7 @@ export const Book: FC<TBookProps> = props => {
           <label>
             Наименовани
             <TextInput
-              defaultValue={newBookInfo.name}
+              value={newBookInfo.name}
               type={'text'}
               onChange={(value) => {
                 setNewBookInfo({...newBookInfo, name: value})
@@ -43,7 +45,7 @@ export const Book: FC<TBookProps> = props => {
           <label>
             Цена
             <TextInput
-              defaultValue={''}
+              value={newBookInfo.price}
               type={'number'}
               onChange={(value) => {
                 setNewBookInfo({...newBookInfo, price: value})
