@@ -24,8 +24,6 @@ export const Main: FC<TMainProps> = props => {
   useEffect(() => {
     dbHelper.connectDB()
       .then(() => {
-        // Теперь база данных подключена, и вы можете безопасно выполнять операции с ней
-
         return dbHelper.getDataByKey('objectStore');
       })
       .then(data => {
@@ -37,13 +35,11 @@ export const Main: FC<TMainProps> = props => {
       });
   }, []);
 
-
+  const [bookInfo, setInfo] = useState();
   return (
     <div style={{display: "flex", gap: 10}}>
-      <button onClick={() => {
-        dbHelper.connectDB();
-      }}> Подключиться к базе
-      </button>
+
+
 
       <button onClick={() => {
         dbHelper.saveObjectData('objectStore', book);
