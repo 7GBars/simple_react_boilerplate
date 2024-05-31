@@ -1,2 +1,3 @@
 export * from './StorageHelper';
-export * from './indexedDBHelper/IndexedDB';
+export * from './IndexedDB';
+export * from './customHooks'

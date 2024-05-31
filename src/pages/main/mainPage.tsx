@@ -5,7 +5,7 @@ import {FileLoader} from "../../components/index";
 
 import '../main.scss';
 
-import {IndexedDBHelper} from "../../helpers/indexedDBHelper/IndexedDB";
+import {IndexedDBHelper} from "../../helpers/IndexedDB";
 import {useEffect} from "react";
 
 type TMainProps = {
@@ -21,25 +21,14 @@ export const MainPage: FC<TMainProps> = props => {
     created: new Date()
   };
   const dbHelper = new IndexedDBHelper<typeof book, 'fileStore' | 'objectStore'>(dbName, ['fileStore', 'objectStore']);
-  useEffect(() => {
-    dbHelper.connectDB()
-      .then(() => {
-        return dbHelper.getDataByKey('objectStore');
-      })
-      .then(data => {
 
-        console.log('Полученные данные:', data);
-      })
-      .catch(error => {
-        console.error('Ошибка при работе с базой данных:', error);
-      });
+  useEffect(() => {
+    dbHelper.connectDB();
   }, []);
 
   const [bookInfo, setInfo] = useState();
   return (
     <div style={{display: "flex", gap: 10}}>
-
-
 
       <button onClick={() => {
         dbHelper.saveObjectData('objectStore', book);
