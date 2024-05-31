@@ -1,12 +1,14 @@
 import React, {FC, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
 
+import StorageHelper from "../../helpers/StorageHelper";
 import {TextInput} from "../../components/index";
+import './book.scss'
 
 
 type TBookProps = {};
 
-type TBookType = {
+export type TBookType = {
   id: string,
   name: string
   price: string,
@@ -23,32 +25,41 @@ export const Book: FC<TBookProps> = props => {
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
   return (
-    <div className={'book'}>
+    <div className={'book-card'}>
+      <div className={'book-card__info'}>
+        <div className={'book__field'}>
+          <label>
+            Наименовани
+            <TextInput
+              defaultValue={newBookInfo.name}
+              type={'text'}
+              onChange={(value) => {
+                setNewBookInfo({...newBookInfo, name: value})
+              }}
+            />
+          </label>
+        </div>
+        <div className={'book__field'}>
+          <label>
+            Цена
+            <TextInput
+              defaultValue={''}
+              type={'number'}
+              onChange={(value) => {
+                setNewBookInfo({...newBookInfo, price: value})
+              }}/>
+          </label>
+        </div>
 
-      <div className={'book__field'}>
-        <label>
-          <TextInput
-            defaultValue={newBookInfo.name}
-            type={'text'}
-            onChange={(value) => {
-              setNewBookInfo({...newBookInfo, name: value})
-            }}
-          />
-        </label>
 
       </div>
-      <div className={'book__field'}>
-        <label>
-          <TextInput
-            defaultValue={''}
-            type={'number'}
-            onChange={(value) => {
-              setNewBookInfo({...newBookInfo, price: value})
-            }}/>
-        </label>
-
+      <div className={'book-card__actions'}>
+        <button onClick={(e) => {
+          StorageHelper.set('book', newBookInfo);
+        }}>Добавить книгу</button>
       </div>
     </div>
+
   );
 }
 

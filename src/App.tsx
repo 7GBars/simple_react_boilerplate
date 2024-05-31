@@ -4,6 +4,7 @@ import {Main} from "./pages";
 
 import './app.css';
 import './variables/output.css';
+import {Book} from "./pages";
 
 
 
@@ -11,7 +12,7 @@ const App: FC<{}> = () => {
 
   return (
     <>
-      <Main/>
+      <Book/>
     </>
 
   )
