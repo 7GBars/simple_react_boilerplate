@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react';
 
-import {SAVED_FILE_FIELD} from "../constants/index";
-import {FileLoader} from "../components/index";
+import {SAVED_FILE_FIELD} from "../../constants/index";
+import {FileLoader} from "../../components/index";
 
-import './main.scss';
+import '../main.scss';
 
-import {IndexedDBHelper} from "../utils/useIndexedDB/IndexedDB";
+import {IndexedDBHelper} from "../../utils/useIndexedDB/IndexedDB";
 import {useEffect} from "react";
 
 type TMainProps = {

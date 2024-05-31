@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FC} from "react";
-import {Main} from "./pages/main";
+import {Main} from "./pages";
 
 import './app.css';
 import './variables/output.css';
