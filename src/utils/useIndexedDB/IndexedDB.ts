@@ -65,7 +65,7 @@ export class IndexedDBHelper<T, StoreNames extends string> {
       }
       const transaction = this._db.transaction([storeName], 'readwrite');
       const store = transaction.objectStore(storeName);
-      const request = store.add({...data, id: storeName});
+      const request = store.put({...data, id: storeName});
 
       request.onsuccess = () => {
         console.log('Данные добавлены', 'id равен', request.result);
