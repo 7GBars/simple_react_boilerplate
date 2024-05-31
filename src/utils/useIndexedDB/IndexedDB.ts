@@ -1,4 +1,3 @@
-let openRequest = indexedDB.open("store", 1);
 import { v4 as uuidv4 } from 'uuid';
 
 export class IndexedDBHelper<T, StoreNames extends string> {
