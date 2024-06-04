@@ -65,9 +65,9 @@ export const Book: FC<TBookProps> = props => {
       </div>
       <div className={'book-card__actions'}>
         <button onClick={(e) => {
-          StorageHelper.set('book', newBookInfo);
+
           setNewBookInfo(initBookInfo);
-          // dbHelper.deleteDB('books')
+
         }}>Добавить книгу</button>
       </div>
     </div>
