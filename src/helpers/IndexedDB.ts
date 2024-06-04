@@ -66,6 +66,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
     }
   }
   public async deleteDB(dbName: N): Promise<void> {
+    await this.disconnectDB();
     return new Promise((resolve, reject) => {
       let deleteRequest = indexedDB.deleteDatabase(dbName as string);
       deleteRequest.onsuccess = (e) => {

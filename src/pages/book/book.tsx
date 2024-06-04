@@ -27,11 +27,13 @@ export const Book: FC<TBookProps> = props => {
     price: ''
   };
 
+  const confirmDialog = () => confirm('Достать данные')
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
+
   const dbHelper = useSaveIndexedDB<
     'books',
     TBookType
-  >('books', newBookInfo, setNewBookInfo);
+  >('books', newBookInfo, setNewBookInfo, confirmDialog);
 
 
   return (
@@ -64,10 +66,9 @@ export const Book: FC<TBookProps> = props => {
 
       </div>
       <div className={'book-card__actions'}>
-        <button onClick={(e) => {
-
+        <button onClick={async (e) => {
           setNewBookInfo(initBookInfo);
-
+          await dbHelper.saveObjectData('objects', newBookInfo);
         }}>Добавить книгу</button>
       </div>
     </div>

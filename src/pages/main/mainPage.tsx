@@ -20,7 +20,7 @@ export const MainPage: FC<TMainProps> = props => {
     price: 10,
     created: new Date()
   };
-  const dbHelper = new IndexedDBHelper<typeof book, 'fileStore' | 'objectStore'>(dbName, ['fileStore', 'objectStore']);
+  const dbHelper = new IndexedDBHelper<'my-db', typeof book, 'fileStore' | 'objectStore'>(dbName, ['fileStore', 'objectStore']);
 
   useEffect(() => {
     dbHelper.connectDB();
