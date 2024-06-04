@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import {IndexedDBHelper} from "../../helpers/index";
 import {useRef} from "react";
 import {useSaveIndexedDB} from "../../helpers/index";
+import {FileLoader} from "../../components/index";
 
 
 type TBookProps = {};
@@ -30,11 +31,15 @@ export const Book: FC<TBookProps> = props => {
   const confirmDialog = () => confirm('Достать данные')
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
+
+
   const dbHelper = useSaveIndexedDB<
     'books',
     TBookType
   >('books', newBookInfo, setNewBookInfo, confirmDialog);
+  const fileValueChange = (value: File) => {
 
+  }
 
   return (
     <div className={'book-card'}>
@@ -63,7 +68,7 @@ export const Book: FC<TBookProps> = props => {
           </label>
         </div>
 
-
+        <FileLoader onValueChange={(value) => console.log(value)}/>
       </div>
       <div className={'book-card__actions'}>
         <button onClick={async (e) => {
