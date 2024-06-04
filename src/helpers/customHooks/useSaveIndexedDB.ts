@@ -16,7 +16,7 @@ export  const useSaveIndexedDB = <N extends string, D>(
     dbHelperInstanceRef.current = new IndexedDBHelper<N, D, 'files' | 'objects'>(dbName, ['objects', 'files']);
 
     dbHelperInstanceRef.current!.connectDB().then((res) => {
-      dbHelperInstanceRef.current!.getDataByKey('objects')
+      dbHelperInstanceRef.current!.getStoreByKey('objects')
         .then(data => {
           if (data) {
             confirmLogic()

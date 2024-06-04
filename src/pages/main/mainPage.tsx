@@ -36,7 +36,7 @@ export const MainPage: FC<TMainProps> = props => {
       </button>
 
       <button onClick={() => {
-        dbHelper.getDataByKey('objectStore');
+        dbHelper.getStoreByKey('objectStore');
       }}> Получить данные
       </button>
 
