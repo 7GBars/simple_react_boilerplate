@@ -1,41 +1,38 @@
-import {IndexedDBHelper} from "../IndexedDB";
+import {IndexedDBHelper} from "..";
 import {useRef, SetStateAction, useEffect, Dispatch} from "react";
-
-import {TBookType} from "../../pages/index";
 
 
 export  const useSaveIndexedDB = <N extends string, D>(
   dbName: N,
   objectModel: D,
-  setDefaultDataCallBack:  Dispatch<SetStateAction<D>>
-): IndexedDBHelper<D, 'files' | 'objects'>  => {
-  const dbHelper = new IndexedDBHelper<D, 'files' | 'objects'>(dbName, ['objects', 'files']);
-
-  const savedObjectRef = useRef<D>(null);
+  setDefaultDataCallBack:  Dispatch<SetStateAction<D>>,
+  confirmLogic: (...arg: any[]) => boolean,
+): IndexedDBHelper<N, D, 'files' | 'objects'> | undefined => {
+  const dbHelperInstanceRef = useRef<IndexedDBHelper<N, D, 'files' | 'objects'> | undefined>(undefined);
+  const savedObjectRef = useRef<D>(objectModel);
   savedObjectRef.current = objectModel;
 
   useEffect(() => {
-    dbHelper.connectDB().then((res) => {
-      dbHelper.getDataByKey('files')
+    dbHelperInstanceRef.current = new IndexedDBHelper<N, D, 'files' | 'objects'>(dbName, ['objects', 'files']);
+
+    dbHelperInstanceRef.current!.connectDB().then((res) => {
+      dbHelperInstanceRef.current!.getDataByKey('objects')
         .then(data => {
-            console.log('data on Set', data);
-            data && setDefaultDataCallBack(data);
+          if (data) {
+            confirmLogic()
+              ? setDefaultDataCallBack(data)
+              : dbHelperInstanceRef.current?.clearStore('objects')
+          }
         })
     })
 
     return () => {
-      console.log('component book unmounted')
-      if (dbHelper.DataBase) {
-        console.log('connect при размонтировании остался',  objectModel)
-        dbHelper.saveObjectData('files', savedObjectRef.current);
-      } else {
-        console.log('Новый коннект при размонтировании',  savedObjectRef.current)
-        dbHelper.connectDB().then((res) => {
-          dbHelper.saveObjectData('files', savedObjectRef.current)
-        })
+      if (dbHelperInstanceRef.current!.DataBase) {
+        dbHelperInstanceRef.current?.IsNeedSave && dbHelperInstanceRef.current!.saveObjectData('objects', savedObjectRef.current);
       }
+      dbHelperInstanceRef.current!.disconnectDB();
     }
   }, []);
 
-  return dbHelper;
+  return dbHelperInstanceRef.current;
 }
