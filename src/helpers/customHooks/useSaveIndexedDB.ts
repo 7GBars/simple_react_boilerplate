@@ -1,18 +1,28 @@
 import {IndexedDBHelper} from "..";
 import {useRef, SetStateAction, useEffect, Dispatch} from "react";
 import {getAllDataFromStore} from "..";
+import {useState} from "react";
 
-
+type useSaveIndexedDBReturnType<N, D> = {
+  dbHelperInstance: IndexedDBHelper<N, D, 'files' | 'objects'> | undefined,
+  dataFromDB: {
+    objectModel: D,
+    files: {id: string, file: File} | undefined
+  }
+}
 export  const useSaveIndexedDB = <N extends string, D>(
   dbName: N,
-  objectModel: D,
-  setDefaultDataCallBack:  Dispatch<SetStateAction<D>>,
-  setDefaultFiles:  Dispatch<SetStateAction<{id: string, file: File}>>,
+  initObjectModel: D,
+  dataForSave: D,
   confirmLogic: (...arg: any[]) => boolean,
-): IndexedDBHelper<N, D, 'files' | 'objects'> | undefined => {
+): useSaveIndexedDBReturnType<N, D> => {
+  const [savedData, setSavedData] = useState<{
+    objectModel: D,
+    files: {id: string, file: File} | undefined
+  }>({objectModel: initObjectModel, files: undefined})
   const dbHelperInstanceRef = useRef<IndexedDBHelper<N, D, 'files' | 'objects'> | undefined>(undefined);
-  const savedObjectRef = useRef<D>(objectModel);
-  savedObjectRef.current = objectModel;
+  const savedObjectRef = useRef<D>(dataForSave);
+  savedObjectRef.current = dataForSave;
 
   if (!dbHelperInstanceRef.current) {
     dbHelperInstanceRef.current = new IndexedDBHelper<N, D, 'files' | 'objects'>(dbName, ['objects', 'files']);
@@ -23,20 +33,26 @@ export  const useSaveIndexedDB = <N extends string, D>(
       dbHelperInstanceRef.current!.getStoreByKey('objects')
         .then(data => {
           if (data) {
-            confirmLogic()
-              ? setDefaultDataCallBack(data)
-              : dbHelperInstanceRef.current?.clearStore('objects')
+           return confirmLogic() ? data : (
+             dbHelperInstanceRef.current?.clearStore('objects'),
+             dbHelperInstanceRef.current?.clearStore('files'),
+             undefined
+           );
           }
         })
-        getAllDataFromStore(dbHelperInstanceRef.current?.DataBase, 'files')
-          .then(files => {
-              if (files.length) {
-                const confirmed = confirm('Прикрепить сохраненные файлы? ');
-                confirmed
-                  ? setDefaultFiles(files[0])
-                  : dbHelperInstanceRef.current?.clearStore('files')
+        .then((objectModel) => {
+          getAllDataFromStore(dbHelperInstanceRef.current?.DataBase, 'files')
+            .then(files => {
+              if (objectModel || files.length) {
+                setSavedData({
+                  objectModel: objectModel as unknown as D,
+                  files: files[1]
+                });
               }
-          })
+
+            })
+        })
+
     })
 
     return () => {
@@ -47,6 +63,9 @@ export  const useSaveIndexedDB = <N extends string, D>(
     }
   }, []);
 
-  console.log(dbHelperInstanceRef.current, 'что на выходе') // тут undefined
-  return dbHelperInstanceRef.current;
+
+  return {
+    dbHelperInstance: dbHelperInstanceRef.current,
+    dataFromDB: savedData
+  };
 }

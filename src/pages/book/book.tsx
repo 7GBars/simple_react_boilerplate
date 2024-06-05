@@ -32,19 +32,22 @@ export const Book: FC<TBookProps> = props => {
   const confirmDialog = () => confirm('Достать данные')
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
-
-  const [fileData, setFileData] = useState<{id: string, file: File} | undefined>(undefined);
   const onValueChangeHandler = async (value: File) => {
-    await dbHelper?.addFilesToSave('files', value);
+    await dbHelperData.dbHelperInstance?.addFilesToSave('files', value);
   }
 
-  const dbHelper = useSaveIndexedDB<
+  const dbHelperData = useSaveIndexedDB<
     'books',
     TBookType
-  >('books', newBookInfo, setNewBookInfo, setFileData, confirmDialog);
+  >('books', initBookInfo, newBookInfo, confirmDialog);
 
+  useEffect(() => {
+    if (dbHelperData.dataFromDB.objectModel) {
+      setNewBookInfo(dbHelperData.dataFromDB.objectModel);
+    }
+  }, [dbHelperData.dataFromDB.objectModel]);
 
-  console.log('render book - file value: ', fileData)
+  console.log('render book - file value: ', dbHelperData.dataFromDB.objectModel)
   return (
     <div className={'book-card'}>
       <div className={'book-card__info'}>
@@ -75,17 +78,17 @@ export const Book: FC<TBookProps> = props => {
       <div className={'book-card__actions'}>
         <button onClick={async (e) => {
           setNewBookInfo(initBookInfo);
-          await dbHelper?.saveObjectData('objects', newBookInfo);
+          await dbHelperData.dbHelperInstance?.saveObjectData('objects', newBookInfo);
         }}>Добавить книгу
         </button>
         <button onClick={async (e) => {
-          await dbHelper?.clearStore('objects');
+          await dbHelperData.dbHelperInstance?.clearStore('objects');
         }}>Удалить store книги
         </button>
       </div>
-      <FileLoader savedImageFromBD={fileData?.file} onValueChange={onValueChangeHandler}/>
+      <FileLoader savedImageFromBD={dbHelperData?.dataFromDB.files?.file} onValueChange={onValueChangeHandler}/>
       <button onClick={async (e) => {
-        const files = await getAllDataFromStore(dbHelper?.DataBase, 'files');
+        const files = await getAllDataFromStore(dbHelperData.dbHelperInstance?.DataBase, 'files');
         console.log('files', files);
       }}>Узнать данные хранилища файлов
       </button>
