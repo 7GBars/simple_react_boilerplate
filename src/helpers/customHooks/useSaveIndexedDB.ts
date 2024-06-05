@@ -1,11 +1,13 @@
 import {IndexedDBHelper} from "..";
 import {useRef, SetStateAction, useEffect, Dispatch} from "react";
+import {getAllDataFromStore} from "..";
 
 
 export  const useSaveIndexedDB = <N extends string, D>(
   dbName: N,
   objectModel: D,
   setDefaultDataCallBack:  Dispatch<SetStateAction<D>>,
+  setDefaultFiles:  Dispatch<SetStateAction<File>>,
   confirmLogic: (...arg: any[]) => boolean,
 ): IndexedDBHelper<N, D, 'files' | 'objects'> | undefined => {
   const dbHelperInstanceRef = useRef<IndexedDBHelper<N, D, 'files' | 'objects'> | undefined>(undefined);
@@ -26,6 +28,15 @@ export  const useSaveIndexedDB = <N extends string, D>(
               : dbHelperInstanceRef.current?.clearStore('objects')
           }
         })
+        getAllDataFromStore(dbHelperInstanceRef.current?.DataBase, 'files')
+          .then(files => {
+              if (files.length) {
+                const confirmed = confirm('Прикрепить сохраненные файлы? ');
+                confirmed
+                  ? setDefaultFiles(files[0])
+                  : dbHelperInstanceRef.current?.clearStore('files')
+              }
+          })
     })
 
     return () => {

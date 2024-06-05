@@ -4,14 +4,14 @@ import './FilePreview.scss';
 
 
 type TFileLoaderWithPreviewProps = {
-  file: File;
+  file: File | undefined;
 };
 export const FilePreview: FC<TFileLoaderWithPreviewProps> = props => {
   const {fileDataURL} = useFileReader(props.file, 'readAsDataURL');
 
   return (
     <div className={'img-preview-wrapper'}>
-      <img src={fileDataURL}/>
+      <img src={fileDataURL as string}/>
     </div>
   );
 };

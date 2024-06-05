@@ -10,6 +10,7 @@ import {IndexedDBHelper} from "../../helpers/index";
 import {useRef} from "react";
 import {useSaveIndexedDB} from "../../helpers/index";
 import {FileLoader} from "../../components/index";
+import {getAllDataFromStore} from "../../helpers/index";
 
 
 type TBookProps = {};
@@ -32,11 +33,16 @@ export const Book: FC<TBookProps> = props => {
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
 
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const onValueChangeHandler = async (value: File) => {
+    await dbHelper?.addFilesToSave('files', value);
+  }
 
   const dbHelper = useSaveIndexedDB<
     'books',
     TBookType
-  >('books', newBookInfo, setNewBookInfo, confirmDialog);
+  >('books', newBookInfo, setNewBookInfo, setFile, confirmDialog);
+
 
 
   return (
@@ -69,14 +75,20 @@ export const Book: FC<TBookProps> = props => {
       <div className={'book-card__actions'}>
         <button onClick={async (e) => {
           setNewBookInfo(initBookInfo);
+          await dbHelper?.saveObjectData('objects', newBookInfo);
         }}>Добавить книгу
         </button>
         <button onClick={async (e) => {
-          await dbHelper.clearStore('objects');
-        }}>Удалить store
+          await dbHelper?.clearStore('objects');
+        }}>Удалить store книги
         </button>
       </div>
-      <FileLoader onValueChange={(value) => console.log(value)}/>
+      <FileLoader onValueChange={onValueChangeHandler}/>
+      <button onClick={async (e) => {
+        const files = await getAllDataFromStore(dbHelper?.DataBase, 'files');
+        console.log('files', files);
+      }}>Узнать данные хранилища файлов
+      </button>
     </div>
 
   );

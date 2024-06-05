@@ -1,7 +1,7 @@
 export class IndexedDBHelper<N, T, StoreNames extends string> {
   private readonly _dbName: N;
   private _storesNames: [StoreNames, StoreNames];
-  private _db: IDBDatabase | null = null;
+  private _db: IDBDatabase | null | undefined = null;
   private _savedFiles: File | undefined;
 
   private _isNeedSaveData: boolean = true;
@@ -208,7 +208,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
       return;
     }
      return new Promise((resolve, reject) => {
-       const transaction = this._db.transaction([storeName], 'readwrite');
+       const transaction = this._db!.transaction([storeName], 'readwrite');
        const store = transaction.objectStore(storeName);
        const fileWithKey = { id: Date.now().toString(), file: fileData };
        const request = store.put(fileWithKey);
@@ -242,3 +242,29 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
     })
   }
 }
+
+// Предполагаем, что db - это уже открытое соединение с базой данных IndexedDB
+export const getAllDataFromStore = (db: undefined | IDBDatabase | null, storeName: string): Promise<File[]> => {
+  if (!db) {
+    console.error('База данных не инициализирована');
+    return Promise.reject()
+  }
+  return new Promise((resolve, reject) => {
+    // Открываем транзакцию для чтения данных из хранилища
+    const transaction = db?.transaction([storeName], "readonly");
+    const store = transaction.objectStore(storeName);
+
+    // Получаем все данные из хранилища
+    const getAllRequest = store.getAll();
+
+    getAllRequest.onerror = (event) => {
+      console.error("Error fetching data from the store: ", getAllRequest.error);
+      reject(getAllRequest.error);
+    };
+
+    getAllRequest.onsuccess = (event) => {
+      // Возвращаем все данные из хранилища
+      resolve(getAllRequest.result);
+    };
+  });
+};

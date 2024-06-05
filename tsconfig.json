@@ -9,6 +9,7 @@
     "sourceMap": true,
     "target": "es2017",
     "moduleResolution":"nodenext",
+    "strictNullChecks": true
   },
   "include": [
     "./src/index.tsx"
