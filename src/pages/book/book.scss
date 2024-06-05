@@ -1,12 +1,15 @@
 .book-card {
   background-color: #4cae4c;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
 }
 .book-card__info {
   width: 200px;
   background-color: #2d6da3;
 }
 .book-card__actions {
+  display: flex;
+  gap: 1rem;
 
 }

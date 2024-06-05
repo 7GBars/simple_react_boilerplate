@@ -16,6 +16,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
     return this._db;
   }
   constructor(dbName: N, storesNames: [StoreNames, StoreNames]) {
+    console.log('конструктор')
     this._dbName = dbName;
     const uniqueStores = new Set(storesNames);
     if (uniqueStores.size !== storesNames.length) {

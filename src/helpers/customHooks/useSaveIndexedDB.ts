@@ -12,9 +12,11 @@ export  const useSaveIndexedDB = <N extends string, D>(
   const savedObjectRef = useRef<D>(objectModel);
   savedObjectRef.current = objectModel;
 
-  useEffect(() => {
+  if (!dbHelperInstanceRef.current) {
     dbHelperInstanceRef.current = new IndexedDBHelper<N, D, 'files' | 'objects'>(dbName, ['objects', 'files']);
-
+  }
+  useEffect(() => {
+    console.log(dbHelperInstanceRef.current, 'что по факту') // тут все хорошо ъкземпляр IndexedDBHelper
     dbHelperInstanceRef.current!.connectDB().then((res) => {
       dbHelperInstanceRef.current!.getStoreByKey('objects')
         .then(data => {
@@ -34,5 +36,6 @@ export  const useSaveIndexedDB = <N extends string, D>(
     }
   }, []);
 
+  console.log(dbHelperInstanceRef.current, 'что на выходе') // тут undefined
   return dbHelperInstanceRef.current;
 }

@@ -37,9 +37,7 @@ export const Book: FC<TBookProps> = props => {
     'books',
     TBookType
   >('books', newBookInfo, setNewBookInfo, confirmDialog);
-  const fileValueChange = (value: File) => {
 
-  }
 
   return (
     <div className={'book-card'}>
@@ -67,14 +65,18 @@ export const Book: FC<TBookProps> = props => {
               }}/>
           </label>
         </div>
-
-        <FileLoader onValueChange={(value) => console.log(value)}/>
       </div>
       <div className={'book-card__actions'}>
         <button onClick={async (e) => {
           setNewBookInfo(initBookInfo);
-        }}>Добавить книгу</button>
+        }}>Добавить книгу
+        </button>
+        <button onClick={async (e) => {
+          await dbHelper.clearStore('objects');
+        }}>Удалить store
+        </button>
       </div>
+      <FileLoader onValueChange={(value) => console.log(value)}/>
     </div>
 
   );
