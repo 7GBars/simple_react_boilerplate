@@ -1,6 +1,7 @@
 import React, {FC, useState} from 'react';
 
 import {FilePreview} from "./FilePreview";
+import {useFileReader} from "../../utils/index";
 
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 type TFileLoaderProps = {
@@ -9,7 +10,7 @@ type TFileLoaderProps = {
 };
 export const FileLoader: FC<TFileLoaderProps> = props => {
   const [currentFile, setCurrentFile] = useState<File | undefined>(undefined);
-  const [fileDataURL, setFileDataURL] = useState(null);
+
   const onFileChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const [file] = Array.from(e.target.files as ArrayLike<File>);
     if (file.type.match(imageMimeType)) {
@@ -26,7 +27,7 @@ export const FileLoader: FC<TFileLoaderProps> = props => {
         accept=".png, .jpg, .jpeg"
         onChange={onFileChanged}
       />
-      <FilePreview file={props.savedImageFromBD && currentFile} />
+      <FilePreview file={props.savedImageFromBD || currentFile} />
     </>
   );
 };

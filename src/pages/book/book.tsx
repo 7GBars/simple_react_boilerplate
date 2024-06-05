@@ -83,7 +83,7 @@ export const Book: FC<TBookProps> = props => {
         }}>Удалить store книги
         </button>
       </div>
-      <FileLoader savedImageFromBD={fileData.file} onValueChange={onValueChangeHandler}/>
+      <FileLoader savedImageFromBD={fileData?.file} onValueChange={onValueChangeHandler}/>
       <button onClick={async (e) => {
         const files = await getAllDataFromStore(dbHelper?.DataBase, 'files');
         console.log('files', files);
