@@ -30,7 +30,7 @@ export  const useSaveIndexedDB = <N extends string, D>(
   useEffect(() => {
     console.log(dbHelperInstanceRef.current, 'что по факту') // тут все хорошо ъкземпляр IndexedDBHelper
     dbHelperInstanceRef.current!.connectDB().then((res) => {
-      dbHelperInstanceRef.current!.getStoreByKey('objects')
+      dbHelperInstanceRef.current!.getDataFromStore('objects')
         .then(data => {
           if (data) {
            return confirmLogic() ? data : (

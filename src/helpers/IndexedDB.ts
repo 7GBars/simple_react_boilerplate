@@ -223,7 +223,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
        };
      })
   }
-  public async getStoreByKey(key: StoreNames): Promise<T | undefined> {
+  public async getDataFromStore(key: StoreNames): Promise<T | undefined> {
     return new Promise((resolve, reject) => {
       if (!this._db) {
         console.error('База данных не инициализирована');
@@ -241,6 +241,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
       };
     })
   }
+
 }
 
 // Предполагаем, что db - это уже открытое соединение с базой данных IndexedDB
