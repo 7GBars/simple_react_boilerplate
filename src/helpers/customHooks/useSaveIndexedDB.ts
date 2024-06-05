@@ -7,7 +7,7 @@ export  const useSaveIndexedDB = <N extends string, D>(
   dbName: N,
   objectModel: D,
   setDefaultDataCallBack:  Dispatch<SetStateAction<D>>,
-  setDefaultFiles:  Dispatch<SetStateAction<File>>,
+  setDefaultFiles:  Dispatch<SetStateAction<{id: string, file: File}>>,
   confirmLogic: (...arg: any[]) => boolean,
 ): IndexedDBHelper<N, D, 'files' | 'objects'> | undefined => {
   const dbHelperInstanceRef = useRef<IndexedDBHelper<N, D, 'files' | 'objects'> | undefined>(undefined);

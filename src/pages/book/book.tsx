@@ -33,7 +33,7 @@ export const Book: FC<TBookProps> = props => {
   const [newBookInfo, setNewBookInfo] = useState<TBookType>(initBookInfo);
 
 
-  const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileData, setFileData] = useState<{id: string, file: File} | undefined>(undefined);
   const onValueChangeHandler = async (value: File) => {
     await dbHelper?.addFilesToSave('files', value);
   }
@@ -41,10 +41,10 @@ export const Book: FC<TBookProps> = props => {
   const dbHelper = useSaveIndexedDB<
     'books',
     TBookType
-  >('books', newBookInfo, setNewBookInfo, setFile, confirmDialog);
+  >('books', newBookInfo, setNewBookInfo, setFileData, confirmDialog);
 
 
-
+  console.log('render book - file value: ', fileData)
   return (
     <div className={'book-card'}>
       <div className={'book-card__info'}>
@@ -83,7 +83,7 @@ export const Book: FC<TBookProps> = props => {
         }}>Удалить store книги
         </button>
       </div>
-      <FileLoader onValueChange={onValueChangeHandler}/>
+      <FileLoader savedImageFromBD={fileData.file} onValueChange={onValueChangeHandler}/>
       <button onClick={async (e) => {
         const files = await getAllDataFromStore(dbHelper?.DataBase, 'files');
         console.log('files', files);

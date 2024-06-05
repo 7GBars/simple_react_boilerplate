@@ -5,6 +5,7 @@ import {FilePreview} from "./FilePreview";
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 type TFileLoaderProps = {
   onValueChange: (value: File) => void;
+  savedImageFromBD: File | undefined;
 };
 export const FileLoader: FC<TFileLoaderProps> = props => {
   const [currentFile, setCurrentFile] = useState<File | undefined>(undefined);
@@ -25,7 +26,7 @@ export const FileLoader: FC<TFileLoaderProps> = props => {
         accept=".png, .jpg, .jpeg"
         onChange={onFileChanged}
       />
-      <FilePreview file={currentFile} />
+      <FilePreview file={props.savedImageFromBD && currentFile} />
     </>
   );
 };

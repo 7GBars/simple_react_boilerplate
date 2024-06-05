@@ -244,7 +244,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
 }
 
 // Предполагаем, что db - это уже открытое соединение с базой данных IndexedDB
-export const getAllDataFromStore = (db: undefined | IDBDatabase | null, storeName: string): Promise<File[]> => {
+export const getAllDataFromStore = (db: undefined | IDBDatabase | null, storeName: string): Promise<{id: string, file: File}[]> => {
   if (!db) {
     console.error('База данных не инициализирована');
     return Promise.reject()
