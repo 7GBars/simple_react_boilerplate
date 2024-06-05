@@ -2,10 +2,15 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
   private readonly _dbName: N;
   private _storesNames: [StoreNames, StoreNames];
   private _db: IDBDatabase | null = null;
+  private _savedFiles: File | undefined;
 
   private _isNeedSaveData: boolean = true;
   public get IsNeedSave() {
     return this._isNeedSaveData;
+  }
+
+  public get getFiles() {
+    return this._savedFiles;
   }
   public get DataBase() {
     return this._db;
@@ -98,6 +103,7 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
 
         clearRequest.onsuccess = () => {
           console.log(`Все данные из хранилища ${storeName} были удалены.`);
+          this.disconnectDB()
           resolve();
         };
 
@@ -193,6 +199,28 @@ export class IndexedDBHelper<N, T, StoreNames extends string> {
         reject(request.error);
       };
     })
+  }
+
+  public async addFilesToSave(storeName: StoreNames, fileData: File) {
+    if (!this._db) {
+      console.error('База данных не инициализирована');
+      return;
+    }
+     return new Promise((resolve, reject) => {
+       const transaction = this._db.transaction([storeName], 'readwrite');
+       const store = transaction.objectStore(storeName);
+       const fileWithKey = { id: Date.now().toString(), file: fileData };
+       const request = store.put(fileWithKey);
+
+       request.onsuccess = () => {
+         console.log('Данные добавлены', 'id записи в ', request.result);
+         resolve(request.result)
+       };
+       request.onerror = () => {
+         console.log('Ошибка при добавлении данных', request.error);
+         reject(request.error);
+       };
+     })
   }
   public async getStoreByKey(key: StoreNames): Promise<T | undefined> {
     return new Promise((resolve, reject) => {

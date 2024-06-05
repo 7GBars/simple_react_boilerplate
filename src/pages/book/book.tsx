@@ -73,7 +73,6 @@ export const Book: FC<TBookProps> = props => {
       <div className={'book-card__actions'}>
         <button onClick={async (e) => {
           setNewBookInfo(initBookInfo);
-          await dbHelper.saveObjectData('objects', newBookInfo);
         }}>Добавить книгу</button>
       </div>
     </div>
